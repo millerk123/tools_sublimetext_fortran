@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+    <key>scope</key>
+    <string>source.modern-fortran meta.end-module-program-unit.fortran</string>
+    <key>settings</key>
+    <dict>
+        <key>symbolTransformation</key>
+        <string>
+            s/^(.*)/======END $1======/g;
+        </string>
+    </dict>
+</dict>
+</plist>

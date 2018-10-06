@@ -1,6 +1,6 @@
 %YAML 1.2
 ---
-name: Fortran (Modern)
+name: Fortran ((post)Modern)
 file_extensions: [f90, F90, f95, F95, f03, F03, f08, F08]
 scope: source.modern-fortran
 
@@ -175,6 +175,7 @@ contexts:
     - include: else_if_then_end_of_statement
     - include: else_statement
     - include: end_construct
+    - include: end_module_program_unit
     - include: end_program_unit # must come after end_construct
     - include: entry_statement
     - include: enum_statement
@@ -670,6 +671,28 @@ contexts:
             - match: \w+
               scope: invalid.illegal
 
+# Added by ADAM.. same as 'end_program_unit; but specifically for ending modules.
+# I want the end module statments separated out because it is usefull to show this statement
+# within Sublime's symbols.
+  end_module_program_unit:
+    # Matches all "end unit" statements, where unit is optional. Must come after end_construct
+    - match: (?xi:(?=\b end \s* (!|;|$|&|module\b) (\s+{{ident}})?\b))
+      scope: end_module_program_unit.begin
+      push:
+        - meta_content_scope: end_module_program_unit.contents
+        - include: pop-at-end-of-line
+        - meta_scope: meta.end-module-program-unit.fortran
+        - match: (?xi:\bend)
+          scope: keyword.control.end.fortran
+          push:
+            - include: pop-at-end-of-line
+            - match: "{{program_unit}}"
+              scope: keyword.control.program-unit.fortran
+              set:
+                - include: pop-at-end-of-line
+                - match: "{{ident}}"
+                  scope: entity.name.function.fortran
+
   end_program_unit:
     # Matches all "end unit" statements, where unit is optional. Must come after end_construct
     - match: (?xi:(?=\b end \s* (!|;|$|&|{{program_unit}}\b) (\s+{{ident}})?\b))
@@ -1055,11 +1078,27 @@ contexts:
         2: keyword.operator.double_colon.fortran
         3: entity.name.function.type.fortran
 
+    # Added by ADAM so that 'module procedure' statemnts would not be counted as symbols within sublime text.
+    #   This is a judgment call.. I think it makes things way too clustered.
+    #   Note: The 'module deifntion' rule immedialtly below matched the 'module procedures' as well. Since the rules
+    #         are checked in order, we insert this new rule before.
+    - match: |
+        (?xi)
+        (?:^
+          \s* (module)
+          (?: \s* procedure)
+          \s+  (\w+)
+        )
+      captures:
+        1: keyword.control.module.fortran
+        2: entity.name.module.procedure.fortran
+
     # module definition
     - match: |
         (?xi)
         (?:^
           \s* (module)
+          (?: \s* procedure)?
           \s+  (\w+)
         )
       captures:
@@ -1091,7 +1130,7 @@ contexts:
         )
       captures:
         1: keyword.control.interface.fortran
-        2: entity.name.function.fortran
+        2: entity.name.function.interface.fortran
       # push: interface
 
     # function/subroutine definition with parameter list
@@ -1131,6 +1170,21 @@ contexts:
         3: keyword.control.function.fortran
         4: entity.name.function.fortran
       # push: subroutines
+    #  to capture new style derived types (type bound procedures)
+    # ADAM: TODO.. make a proper context for this
+    - match: |
+        (?xi)
+        (?:^
+          \s* (procedure|generic)
+          (\s*::\s*|\s+)
+          (\s*=?\s*|\s+)?
+          ({{ident}})?
+        )
+      captures:
+        1: keyword.type.fortran
+        2: keyword.operator.double_colon.fortran
+        3: keyword.operator.prodecure_assign.fortran
+        4: entity.name.function.type_bound_procedure.fortran
 
 
 
