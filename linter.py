@@ -17,7 +17,7 @@ except (ImportError):
 
 class GfortranFixedForm(Linter):
     """Provides an interface to gfortran."""
-    syntax = 'fortranfixedform'
+    defaults = { 'selector': 'source.f03, source.f90, source.f77' }
     cmd = 'gfortran -cpp -fsyntax-only -Wall'
     executable = None
     version_args = '--version'
@@ -37,7 +37,7 @@ class GfortranFixedForm(Linter):
 
 class GfortranModern(Linter):
     """Provides an interface to gfortran."""
-    syntax = 'fortranmodern'
+    defaults = { 'selector': 'source.f03, source.f90, source.f77' }
     cmd = 'gfortran -cpp -fsyntax-only -Wall'
     executable = None
     version_args = '--version'
