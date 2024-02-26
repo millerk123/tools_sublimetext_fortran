@@ -17,12 +17,19 @@ except (ImportError):
 
 class GfortranFixedForm(Linter):
     """Provides an interface to gfortran."""
-    defaults = { 'selector': 'source.f03, source.f90, source.f77' }
     cmd = 'gfortran -cpp -fsyntax-only -Wall'
-    executable = None
-    version_args = '--version'
-    version_re = r'(?P<version>\d+\.\d+\.\d+)'
-    version_requirement = '>= 4.0'
+
+    # Adding defaults:selector arg because this is required by SublimeLinter as of July 2019
+    defaults = {
+        'selector': 'source.fixedform-fortran'
+    }
+
+    # Commenting out args that are no longer used by SublimeLinter as of July 2019
+    # executable = None
+    # version_args = '--version'
+    # version_re = r'(?P<version>\d+\.\d+\.\d+)'
+    # version_requirement = '>= 4.0'
+
     multiline = True
     regex = (
         # filename:line:col: is common for multiline and single line warnings
@@ -37,12 +44,19 @@ class GfortranFixedForm(Linter):
 
 class GfortranModern(Linter):
     """Provides an interface to gfortran."""
-    defaults = { 'selector': 'source.f03, source.f90, source.f77' }
     cmd = 'gfortran -cpp -fsyntax-only -Wall'
-    executable = None
-    version_args = '--version'
-    version_re = r'(?P<version>\d+\.\d+\.\d+)'
-    version_requirement = '>= 4.0'
+
+    # Adding defaults:selector arg because this is required by SublimeLinter as of July 2019
+    defaults = {
+        'selector': 'source.modern-fortran'
+    }
+
+    # Commenting out args that are no longer used by SublimeLinter as of July 2019
+    # executable = None
+    # version_args = '--version'
+    # version_re = r'(?P<version>\d+\.\d+\.\d+)'
+    # version_requirement = '>= 4.0'
+
     multiline = True
     regex = (
         # filename:line:col: is common for multiline and single line warnings
