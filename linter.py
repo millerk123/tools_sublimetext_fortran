@@ -17,7 +17,7 @@ except (ImportError):
 
 class GfortranFixedForm(Linter):
     """Provides an interface to gfortran."""
-    cmd = 'gfortran -cpp -fsyntax-only -Wall'
+    cmd = 'gfortran -cpp -fsyntax-only -Wall ${temp_file}'
 
     # Adding defaults:selector arg because this is required by SublimeLinter as of July 2019
     defaults = {
@@ -44,7 +44,7 @@ class GfortranFixedForm(Linter):
 
 class GfortranModern(Linter):
     """Provides an interface to gfortran."""
-    cmd = 'gfortran -cpp -fsyntax-only -Wall'
+    cmd = 'gfortran -cpp -fsyntax-only -Wall ${temp_file}'
 
     # Adding defaults:selector arg because this is required by SublimeLinter as of July 2019
     defaults = {
