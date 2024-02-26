@@ -151,7 +151,7 @@ variables:
 
 contexts:
   main:
-    - include: Packages/Fortran/grammars/OpenMP.sublime-syntax
+    - include: Packages/tools_sublimetext_fortran/grammars/OpenMP.sublime-syntax
     - include: statement
     - include: expression
     - include: other
